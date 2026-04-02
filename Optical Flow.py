@@ -45,7 +45,7 @@ polySigma = 1.2
 # Operation flags: combination of OPTFLOW_USE_INITIAL_FLOW and/or OPTFLOW_FARNEBACK_GAUSSIAN
 flags = 0
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 suc, prev = cap.read()
 
 # ---- Lab Step c-i: Comment out this section to switch to grayscale tracking ----
