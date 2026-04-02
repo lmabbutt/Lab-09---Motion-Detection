@@ -3,7 +3,7 @@ import cv2
 import time
 
 threshold = 30
-step = 16  # the number of pixels within each block the velocity is being looked for
+step = 12  # the number of pixels within each block the velocity is being looked for
 
 def draw_flow(img, flow):
     h, w = img.shape[:2]
@@ -40,7 +40,7 @@ polyN = 5
 
 # Standard deviation of Gaussian used to smooth derivatives;
 # for polyN=5 use polySigma=1.1, for polyN=7 use polySigma=1.5
-polySigma = 1.2
+polySigma = 1.1
 
 # Operation flags: combination of OPTFLOW_USE_INITIAL_FLOW and/or OPTFLOW_FARNEBACK_GAUSSIAN
 flags = 0
@@ -50,41 +50,41 @@ suc, prev = cap.read()
 
 # ---- Lab Step c-i: Comment out this section to switch to grayscale tracking ----
 ## Separate into color layers to get Red Only
-red = np.matrix(prev[:,:,2])
-blue = np.matrix(prev[:,:,0])
-green = np.matrix(prev[:,:,1])
-red_Only = np.int16(red) - np.int16(green) - np.int16(blue)
+#red = np.matrix(prev[:,:,2])
+#blue = np.matrix(prev[:,:,0])
+#green = np.matrix(prev[:,:,1])
+#red_Only = np.int16(red) - np.int16(green) - np.int16(blue)
 
 # Threshold to B/W image
-red_Only[red_Only < threshold] = 0
-red_Only[red_Only >= threshold] = 255
+#red_Only[red_Only < threshold] = 0
+#red_Only[red_Only >= threshold] = 255
 
 # Converting to correct image type values
-red_Only = np.uint8(red_Only)
+#red_Only = np.uint8(red_Only)
 
 # Save this as the previous red only image
-prevRed = red_Only
+#prevRed = red_Only
 # ---- End of section to comment out for grayscale ----
 
 # ---- Lab Step c-ii: Uncomment the line below to switch to grayscale tracking ----
-#prevgray = cv2.cvtColor(prev, cv2.COLOR_BGR2GRAY)
+prevgray = cv2.cvtColor(prev, cv2.COLOR_BGR2GRAY)
 
 while True:
     suc, img = cap.read()
 
     # ---- Lab Step c-iii: Comment out this section to switch to grayscale tracking ----
     ## Separate into color layers to get Red Only
-    red = np.matrix(img[:,:,2])
-    blue = np.matrix(img[:,:,0])
-    green = np.matrix(img[:,:,1])
-    red_Only = np.int16(red) - np.int16(green) - np.int16(blue)
+    #red = np.matrix(img[:,:,2])
+    #blue = np.matrix(img[:,:,0])
+    #green = np.matrix(img[:,:,1])
+    #red_Only = np.int16(red) - np.int16(green) - np.int16(blue)
 
     # Threshold to B/W image
-    red_Only[red_Only < threshold] = 0
-    red_Only[red_Only >= threshold] = 255
+    #red_Only[red_Only < threshold] = 0
+    #red_Only[red_Only >= threshold] = 255
 
     # Converting to correct image type values
-    red_Only = np.uint8(red_Only)
+    #red_Only = np.uint8(red_Only)
     # ---- End of section to comment out for grayscale ----
 
     # Take current image and convert to grayscale for better visual later
@@ -95,15 +95,13 @@ while True:
 
     # ---- Lab Step c-iv: Comment out these two lines to switch to grayscale tracking ----
     # Computes dense optical flow using Gunnar Farneback's algorithm (Red Only)
-    flow = cv2.calcOpticalFlowFarneback(prevRed, red_Only, flow, pyrScale, levels,
-                                        winsize, iterations, polyN, polySigma, flags)
-    prevRed = red_Only
+    #flow = cv2.calcOpticalFlowFarneback(prevRed, red_Only, flow, pyrScale, levels, winsize, iterations, polyN, polySigma, flags)
+    #prevRed = red_Only
     # ---- End of section to comment out for grayscale ----
 
     # ---- Lab Step c-v: Uncomment these two lines to switch to grayscale tracking ----
-    #flow = cv2.calcOpticalFlowFarneback(prevgray, gray, flow, pyrScale, levels,
-    #                                    winsize, iterations, polyN, polySigma, flags)
-    #prevgray = gray
+    flow = cv2.calcOpticalFlowFarneback(prevgray, gray, flow, pyrScale, levels, winsize, iterations, polyN, polySigma, flags)
+    prevgray = gray
 
     # End time
     end = time.time()

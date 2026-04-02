@@ -22,7 +22,7 @@ while(1):
 
     red_Only1 = np.uint8(red_Only1)
 
-    time.sleep(0.1) #sec
+    time.sleep(0.01) #Sleep time in sec
 
     # Second Image
     _, frame = cap.read()
